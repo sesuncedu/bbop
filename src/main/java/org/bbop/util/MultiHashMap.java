@@ -1,12 +1,8 @@
 package org.bbop.util;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Set;
+import org.apache.log4j.Logger;
 
-import org.apache.log4j.*;
+import java.util.*;
 
 public class MultiHashMap<K,V> implements MultiMap<K,V> {
 
@@ -83,14 +79,16 @@ public class MultiHashMap<K,V> implements MultiMap<K,V> {
 		return value;
 	}
 	
-	public V remove(K key, V value) {
-		Collection<V> vals = map.get(key);
+	public boolean remove(Object key, Object value) {
+		boolean removed=false;
+        Collection<V> vals = map.get(key);
 		if (vals != null) {
-			vals.remove(value);
-			if (vals.size() == 0)
-				map.remove(key);
+			removed = vals.remove(value);
+			if (vals.size() == 0) {
+                map.remove(key);
+            }
 		}
-		return value;		
+		return removed;
 	}
 
 	protected Collection<V> createCollection() {
